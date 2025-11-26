@@ -42,7 +42,7 @@ export const createBook = async (req, res) => {
             totalCopies,
             availableCopies,
             isbn,
-            issuedCount: 0
+            issuedCount
         });
 
         await book.save();
