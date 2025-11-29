@@ -32,7 +32,7 @@ export const getBookById = async (req, res) => {
 
 export const createBook = async (req, res) => {
     try {
-        const { title, author, description, category, totalCopies, availableCopies, isbn } = req.body;
+        const { title, author, description, category, totalCopies, availableCopies, isbn, issuedCount } = req.body;
 
         const book = new Book({
             title,
@@ -60,7 +60,7 @@ export const createBook = async (req, res) => {
 export const updateBookById = async (req, res) => {
     try {
         const { id } = req.params
-        const { title, author, description, category, totalCopies, availableCopies, isbn } = req.body;
+        const { title, author, description, category, totalCopies, availableCopies, isbn, issuedCount } = req.body;
 
         const book = await Book.findByIdAndUpdate(id, {
             title,
@@ -69,7 +69,8 @@ export const updateBookById = async (req, res) => {
             category,
             totalCopies,
             availableCopies,
-            isbn
+            isbn,
+            issuedCount
         }, { new: true });
 
 

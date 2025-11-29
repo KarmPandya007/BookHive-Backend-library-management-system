@@ -3,6 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import booksRoutes from './routes/booksRoutes.js';
+import readersRoutes from './routes/readersRoutes.js';
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.get('/', (req, res)=>{
 
 // Books API Routes
 app.use('/api/books', booksRoutes);
+app.use('/api/readers', readersRoutes);
 
 app.listen(process.env.PORT, ()=>{
     console.log(`Server running on port http://localhost:${process.env.PORT}`);
