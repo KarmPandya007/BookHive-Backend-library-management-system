@@ -15,7 +15,7 @@ await connectDB();
 // https://book-hive-frontend-library-manageme.vercel.app
 app.use(cors({
     // origin: "http://localhost:3000",
-    origin: "https://book-hive-frontend-library-manageme.vercel.app",
+    origin: "https://bookhive-library-management-portal.vercel.app/",
     methods: "GET,POST,PUT,DELETE",
 }));
 app.use(express.json())
