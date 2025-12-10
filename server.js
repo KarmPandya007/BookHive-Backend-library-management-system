@@ -12,14 +12,27 @@ dotenv.config();
 await connectDB();
 
 
-// https://book-hive-frontend-library-manageme.vercel.app
+// CORS configuration
+const allowedOrigins = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://bookhive-library-management-portal.vercel.app",
+    "https://book-hive-frontend-library-manageme.vercel.app"
+];
+
 app.use(cors({
-    origin: [
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "https://bookhive-library-management-portal.vercel.app",
-        "https://book-hive-frontend-library-manageme.vercel.app"
-    ],
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+        
+        // Check if origin matches allowed origins (with or without trailing slash)
+        const normalizedOrigin = origin.replace(/\/$/, '');
+        if (allowedOrigins.some(allowed => allowed === normalizedOrigin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: "GET,POST,PUT,DELETE",
     credentials: true
 }));
