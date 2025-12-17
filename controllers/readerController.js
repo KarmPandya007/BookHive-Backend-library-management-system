@@ -17,15 +17,6 @@ export const getReaderById = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 }
-export const createReader = async (req, res) => {
-    try {
-        const reader = new Reader(req.body);
-        await reader.save();
-        res.status(201).json({ success: true, message: "Reader created successfully", reader });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
-}
 export const updateReaderById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -43,4 +34,34 @@ export const deleteReaderById = async (req, res) => {
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
-} 
+}
+
+export const deleteAllReaders = async (req, res) => {
+    try {
+        const result = await Reader.find({});
+        if (result.length === 0) {
+            return res.status(404).json({ success: false, message: "No readers found to delete." });
+        }
+        else {
+            await Reader.deleteMany({});
+            return res.status(200).json({ success: true, message: "All readers deleted successfully." });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+export const registerReader = async (req, res) => {
+    try{
+        const { name, email, phone, address, id, password } = req.body;
+        const reader = await Reader.findOne({ email });
+        if(reader){
+            return res.status(400).json({ success: false, message: "Reader with this email already exists." });
+        }
+        const newReader = new Reader({ name, email, phone, address, id , password });
+        await newReader.save();
+        res.status(201).json({ success: true, message : "Reader successfully registered.", reader: newReader });
+    } catch(error){
+        res.status(500).json({ success: false, message: error.message });
+    }
+}

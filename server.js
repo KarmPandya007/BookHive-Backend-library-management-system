@@ -14,7 +14,7 @@ await connectDB();
 
 // CORS configuration
 const allowedOrigins = [
-    "http://localhost:3000",
+    "http://localhost:3001",
     "https://bookhive-library-management-portal.vercel.app"
 ];
 
