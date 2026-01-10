@@ -54,10 +54,13 @@ export const deleteAllReaders = async (req, res) => {
 export const registerReader = async (req, res) => {
     try{
         const { name, email, phone, address, id, password } = req.body;
-        const reader = await Reader.findOne({ email });
+        const reader = await Reader.findOne({ 
+            $or: [{ email: email },{ phone: phone },{ id: id }]
+        });
         if(reader){
-            return res.status(400).json({ success: false, message: "Reader with this email already exists." });
+            return res.status(400).json({ success: false, message: "Reader with this email, phone, or ID already exists." });
         }
+        
         const newReader = new Reader({ name, email, phone, address, id , password });
         await newReader.save();
         res.status(201).json({ success: true, message : "Reader successfully registered.", reader: newReader });
