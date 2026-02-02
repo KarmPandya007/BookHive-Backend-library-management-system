@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors'
 import dotenv from 'dotenv';
+import compression from 'compression';
 import { connectDB } from './config/db.js';
 import booksRoutes from './routes/booksRoutes.js';
 import readersRoutes from './routes/readersRoutes.js';
@@ -9,6 +10,7 @@ const app = express();
 
 dotenv.config();
 
+app.use(compression());
 await connectDB();
 
 

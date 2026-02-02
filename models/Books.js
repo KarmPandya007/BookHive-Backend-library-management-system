@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const bookSchema = new mongoose.Schema(
     {
-        title: { type: String, required: true, trim: true, unique: true,},
+        title: { type: String, required: true, trim: true, unique: true, },
 
         author: { type: String, required: true, trim: true, },
 
@@ -29,7 +29,7 @@ const bookSchema = new mongoose.Schema(
 );
 
 // 🔍 Text index for search (very useful in libraries)
-// bookSchema.index({ title: "text", author: "text", category: "text", keywords: "text" });
+bookSchema.index({ title: "text", author: "text", category: "text" });
 
 export const Book = mongoose.model("Book", bookSchema);
 
