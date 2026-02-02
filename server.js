@@ -15,17 +15,19 @@ await connectDB();
 // CORS configuration
 const allowedOrigins = [
     "http://localhost:3000",
-    "https://book-hive-frontend-library-manageme.vercel.app/"
+    "https://book-hive-frontend-library-manageme.vercel.app"
 ];
 
 app.use(cors({
     origin: (origin, callback) => {
         // Allow requests with no origin (like mobile apps or curl)
         if (!origin) return callback(null, true);
-        
-        // Check if origin matches allowed origins (with or without trailing slash)
+
+        // Check if origin matches allowed origins (normalized)
         const normalizedOrigin = origin.replace(/\/$/, '');
-        if (allowedOrigins.some(allowed => allowed === normalizedOrigin)) {
+        const isAllowed = allowedOrigins.some(allowed => allowed.replace(/\/$/, '') === normalizedOrigin);
+
+        if (isAllowed) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
@@ -36,7 +38,7 @@ app.use(cors({
 }));
 app.use(express.json())
 
-app.get('/', (req, res)=>{
+app.get('/', (req, res) => {
     res.send("Library API is running...");
 })
 
@@ -44,6 +46,6 @@ app.get('/', (req, res)=>{
 app.use('/api/books', booksRoutes);
 app.use('/api/readers', readersRoutes);
 
-app.listen(process.env.PORT, ()=>{
+app.listen(process.env.PORT, () => {
     console.log(`Server running on port http://localhost:${process.env.PORT}`);
 })
