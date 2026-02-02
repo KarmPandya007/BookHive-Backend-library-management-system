@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import { connectDB } from './config/db.js';
 import booksRoutes from './routes/booksRoutes.js';
-import readersRoutes from './routes/readersRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 dotenv.config();
@@ -53,7 +53,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/books', booksRoutes);
-app.use('/api/readers', readersRoutes);
+app.use('/api/users', userRoutes);
 
 // Error Handling Middleware
 app.use(notFound);
