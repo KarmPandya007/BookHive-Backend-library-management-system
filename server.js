@@ -1,6 +1,8 @@
 import express from 'express';
-import cors from 'cors';
 import dotenv from 'dotenv';
+dotenv.config();
+
+import cors from 'cors';
 import compression from 'compression';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -8,8 +10,6 @@ import { connectDB } from './config/db.js';
 import booksRoutes from './routes/booksRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
-
-dotenv.config();
 
 // Connect to Database
 await connectDB();
