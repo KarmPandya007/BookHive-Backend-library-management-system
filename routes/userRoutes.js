@@ -18,13 +18,11 @@ router.post('/login', loginUser);
 router.get('/profile', protect, getUserProfile);
 
 // Admin/Protected routes
-router.route('/')
-    .get(protect, admin, getAllUsers)
-    .delete(protect, admin, deleteAllUsers);
+router.get('/', protect, admin, getAllUsers);
+router.delete('/', protect, admin, deleteAllUsers);
 
-router.route('/:id')
-    .get(protect, admin, getUserById)
-    .put(protect, updateUserById)
-    .delete(protect, admin, deleteUserById);
+router.get('/:id', protect, admin, getUserById);
+router.put('/:id', protect, updateUserById);
+router.delete('/:id', protect, admin, deleteUserById);
 
 export default router;
