@@ -1,5 +1,8 @@
 import asyncHandler from "express-async-handler";
 import { Book } from "../models/Books.js";
+import cloudinary from "../config/cloudinary.js";
+import fs from "fs";
+
 
 // @desc    Get all books
 // @route   GET /api/books
@@ -11,7 +14,7 @@ export const getAllBooks = asyncHandler(async (req, res) => {
 
     const [allBooks, total] = await Promise.all([
         Book.find().skip(skip).limit(limit).lean(),
-        Book.countDocuments()
+        Book.estimatedDocumentCount()
     ]);
 
     res.status(200).json({
@@ -45,6 +48,25 @@ export const getBookById = asyncHandler(async (req, res) => {
 export const createBook = asyncHandler(async (req, res) => {
     const { title, author, description, category, totalCopies, availableCopies, isbn, issuedCount } = req.body;
 
+    let coverImageUrl = "";
+
+    // If file is uploaded, upload to Cloudinary
+    if (req.file) {
+        try {
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: 'bookhive/covers',
+                resource_type: 'image'
+            });
+            coverImageUrl = result.secure_url;
+
+            // Delete local file after upload
+            fs.unlinkSync(req.file.path);
+        } catch (error) {
+            console.error('Cloudinary upload error:', error);
+            throw new Error('Failed to upload image');
+        }
+    }
+
     const book = await Book.create({
         title,
         author,
@@ -53,7 +75,8 @@ export const createBook = asyncHandler(async (req, res) => {
         totalCopies,
         availableCopies,
         isbn,
-        issuedCount
+        issuedCount,
+        coverImage: coverImageUrl
     });
 
     res.status(201).json({
@@ -77,6 +100,8 @@ export const updateBookById = asyncHandler(async (req, res) => {
         throw new Error("Book not found");
     }
 
+
+
     res.status(200).json({
         success: true,
         message: "Book updated successfully",
@@ -93,5 +118,6 @@ export const deleteBookById = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Book not found");
     }
+
     res.status(200).json({ success: true, message: "Book deleted successfully" });
 });

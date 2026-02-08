@@ -6,13 +6,13 @@ const bookSchema = new mongoose.Schema(
 
         author: { type: String, required: true, trim: true, },
 
-        description: { type: String, default: "", unique: true, },
+        description: { type: String, default: "", },
 
         category: { type: String, required: true, index: true, },
 
         isbn: { type: String, required: true, unique: true, trim: true, },
 
-        // coverImage: {type: String, Cloudinary URL, default: "", },
+        coverImage: { type: String, default: "" }, // Cloudinary URL
 
         totalCopies: { type: Number, required: true, min: 1, },
 

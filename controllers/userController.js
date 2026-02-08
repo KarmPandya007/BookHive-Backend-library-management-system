@@ -63,7 +63,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 // @route   GET /api/users/profile
 // @access  Private
 export const getUserProfile = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id);
+    const user = req.user;
 
     if (user) {
         res.json({
@@ -92,7 +92,7 @@ export const getAllUsers = asyncHandler(async (req, res) => {
 
     const [users, total] = await Promise.all([
         User.find({}).skip(skip).limit(limit).lean(),
-        User.countDocuments()
+        User.estimatedDocumentCount()
     ]);
 
     res.status(200).json({
