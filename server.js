@@ -30,6 +30,7 @@ if (process.env.NODE_ENV === 'development') {
 // CORS configuration
 const allowedOrigins = [
     "http://localhost:3000",
+    "http://localhost:3001",
     "https://book-hive-frontend-library-manageme.vercel.app"
 ];
 

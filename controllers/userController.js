@@ -13,6 +13,7 @@ export const loginUser = asyncHandler(async (req, res) => {
     if (user && (await user.matchPassword(password))) {
         res.json({
             success: true,
+            message: `${user.role} logged in successfully`,
             _id: user._id,
             name: user.name,
             email: user.email,
@@ -46,6 +47,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     if (user) {
         res.status(201).json({
             success: true,
+            message: `${user.role} registered successfully`,
             _id: user._id,
             name: user.name,
             email: user.email,
